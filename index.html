@@ -1,0 +1,274 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>Exercícios FOR com range</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Maven+Pro:wght@400;500;700&family=JetBrains+Mono:wght@500;700&display=swap">
+<style>
+  /* Layout: página de projeção em coluna única; cada exercício divide a linha entre texto e saída do programa. */
+  :root {
+    --bg: #F5F6F8;
+    --surface: #FFFFFF;
+    --fg: #1C2230;
+    --muted: #596172;
+    --line: #D9DDE5;
+    --accent: #1B3DF2;
+    --hl-bg: #FFE599;
+    --hl-fg: #2A2208;
+    --code-bg: #FFFFFF;
+    --code-fg: #3A3F4A;
+    --kw: #0000FF;
+    --in: #C26400;
+    --fn: #D10000;
+    --str: #2D5A18;
+    --out-bg: #444649;
+    --out-fg: #FFFFFF;
+    --font-body: "Maven Pro", "Segoe UI", system-ui, sans-serif;
+    --font-code: "JetBrains Mono", "Courier New", ui-monospace, monospace;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #12151C;
+      --surface: #1A1E28;
+      --fg: #EDF0F6;
+      --muted: #A3ABBC;
+      --line: #2E3442;
+      --accent: #8FA2FF;
+      --hl-bg: #4B3F12;
+      --hl-fg: #FFE9A6;
+      --code-bg: #0F1219;
+      --code-fg: #C9CFDC;
+      --kw: #7F95FF;
+      --in: #FFB454;
+      --fn: #FF7B7B;
+      --str: #93D68D;
+      --out-bg: #2B2E36;
+      --out-fg: #FFFFFF;
+      color-scheme: dark;
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #12151C;
+    --surface: #1A1E28;
+    --fg: #EDF0F6;
+    --muted: #A3ABBC;
+    --line: #2E3442;
+    --accent: #8FA2FF;
+    --hl-bg: #4B3F12;
+    --hl-fg: #FFE9A6;
+    --code-bg: #0F1219;
+    --code-fg: #C9CFDC;
+    --kw: #7F95FF;
+    --in: #FFB454;
+    --fn: #FF7B7B;
+    --str: #93D68D;
+    --out-bg: #2B2E36;
+    --out-fg: #FFFFFF;
+    color-scheme: dark;
+  }
+
+  * { box-sizing: border-box; }
+  body {
+    background: var(--bg);
+    color: var(--fg);
+    font-family: var(--font-body);
+    font-size: 20px;
+    line-height: 1.5;
+    padding-block: 40px 72px;
+    padding-left: max(16px, env(safe-area-inset-left, 0px));
+    padding-right: max(16px, env(safe-area-inset-right, 0px));
+  }
+  main { max-width: 1040px; margin: 0 auto; display: flex; flex-direction: column; gap: 56px; }
+  h1, h2, h3 { text-wrap: balance; margin: 0; line-height: 1.15; }
+  p { margin: 0; }
+
+  header { display: flex; flex-direction: column; gap: 14px; }
+  .eyebrow {
+    font-size: 14px; letter-spacing: 0.12em; text-transform: uppercase;
+    color: var(--muted); font-weight: 700;
+  }
+  h1 { font-size: clamp(30px, 5vw, 48px); font-weight: 500; }
+  .sub { color: var(--muted); font-size: 22px; max-width: 60ch; }
+
+  .recap {
+    display: grid; gap: 16px;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  }
+  .recap-item {
+    background: var(--surface); border: 1px solid var(--line); border-radius: 6px;
+    padding: 16px 18px; display: flex; flex-direction: column; gap: 8px; min-width: 0;
+  }
+  .recap-item span { font-size: 14px; color: var(--muted); font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; }
+
+  code, pre, .code { font-family: var(--font-code); font-weight: 500; }
+  .code { font-size: 20px; color: var(--code-fg); overflow-wrap: anywhere; }
+  .kw { color: var(--kw); font-weight: 700; }
+  .in { color: var(--in); font-weight: 700; }
+  .fn { color: var(--fn); font-weight: 700; }
+  .str { color: var(--str); font-weight: 700; }
+
+  section { display: flex; flex-direction: column; gap: 28px; }
+  .section-head { display: flex; flex-direction: column; gap: 6px; border-bottom: 2px solid var(--fg); padding-bottom: 12px; }
+  h2 { font-size: clamp(26px, 4vw, 36px); font-weight: 700; }
+  .section-head p { color: var(--muted); font-size: 18px; }
+
+  article {
+    background: var(--surface); border: 1px solid var(--line); border-radius: 6px;
+    padding: 28px; display: grid; gap: 28px;
+    grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr);
+    align-items: start;
+  }
+  .text { display: flex; flex-direction: column; gap: 18px; min-width: 0; }
+  .tag { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; }
+  h3 { font-size: 26px; font-weight: 700; }
+  .badge {
+    font-family: var(--font-code); font-size: 15px; padding: 3px 10px;
+    border: 1px solid var(--accent); color: var(--accent); border-radius: 4px; font-weight: 700;
+  }
+  .hl {
+    background: var(--hl-bg); color: var(--hl-fg);
+    padding: 10px 14px; border-radius: 3px; font-size: 19px;
+  }
+  .hl b { font-weight: 700; }
+
+  .label { font-size: 14px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); font-weight: 700; margin-bottom: 8px; }
+  .side { min-width: 0; }
+  pre {
+    margin: 0; padding: 18px 22px; border-radius: 3px;
+    font-size: 20px; line-height: 1.55; overflow-x: auto; max-width: 100%;
+  }
+  pre.out { background: var(--out-bg); color: var(--out-fg); font-weight: 700; }
+  pre.src { background: var(--code-bg); color: var(--code-fg); border: 1px solid var(--line); font-weight: 500; font-size: 22px; }
+
+  .sol { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
+  .explain { display: flex; flex-direction: column; gap: 14px; min-width: 0; }
+
+  .divider-note { color: var(--muted); font-size: 16px; }
+
+  @media (max-width: 760px) {
+    body { font-size: 18px; padding-block: 28px 56px; }
+    article, .sol { grid-template-columns: minmax(0, 1fr); padding: 20px; }
+    pre, pre.src { font-size: 17px; padding: 14px 16px; }
+    .code { font-size: 17px; }
+  }
+</style>
+
+<main>
+  <header>
+    <div class="eyebrow">Lógica de programação · Python</div>
+    <h1>Estrutura de repetição FOR – “PARA”</h1>
+    <p class="sub">Três exercícios com <code>range()</code>. As soluções estão no final da página.</p>
+  </header>
+
+  <div class="recap" aria-label="Formas do range">
+    <div class="recap-item">
+      <span>Exemplo 1</span>
+      <div class="code"><span class="fn">range</span>(inicio, fim)</div>
+    </div>
+    <div class="recap-item">
+      <span>Exemplo 2</span>
+      <div class="code"><span class="fn">range</span>(inicio, fim, step)</div>
+    </div>
+    <div class="recap-item">
+      <span>Exemplo 3</span>
+      <div class="code"><span class="fn">range</span>(inicio, fim+step, step)</div>
+    </div>
+  </div>
+
+  <section aria-labelledby="enunciados">
+    <div class="section-head">
+      <h2 id="enunciados">Enunciados</h2>
+      <p>O número de parada não conta: o <code>range</code> vai até <code>fim - 1</code>.</p>
+    </div>
+
+    <article>
+      <div class="text">
+        <div class="tag"><h3>Enunciado 1</h3><span class="badge">range(inicio, fim)</span></div>
+        <p>Escreva um programa em Python que use a estrutura <b>for</b> para exibir a mensagem <b>"Aluno"</b> seguida do número de cada aluno, de 1 até 8.</p>
+      </div>
+      <div class="side">
+        <div class="label">Saída esperada</div>
+<pre class="out">Aluno 1
+Aluno 2
+Aluno 3
+Aluno 4
+Aluno 5
+Aluno 6
+Aluno 7
+Aluno 8</pre>
+      </div>
+    </article>
+
+    <article>
+      <div class="text">
+        <div class="tag"><h3>Enunciado 2</h3><span class="badge">range(inicio, fim, step)</span></div>
+        <p>Escreva um programa em Python que use a estrutura <b>for</b> para exibir apenas os <b>números pares</b> de 2 até 20, com a mensagem <b>"Número par"</b> antes de cada valor.</p>
+        <p class="hl"><b>Dica:</b> use o parâmetro <b>step</b>.</p>
+      </div>
+      <div class="side">
+        <div class="label">Saída esperada</div>
+<pre class="out">Número par 2
+Número par 4
+Número par 6
+Número par 8
+Número par 10
+Número par 12
+Número par 14
+Número par 16
+Número par 18
+Número par 20</pre>
+      </div>
+    </article>
+
+    <article>
+      <div class="text">
+        <div class="tag"><h3>Enunciado 3</h3><span class="badge">range(inicio, fim+step, step)</span></div>
+        <p>Escreva um programa em Python que mostre uma contagem de 5 em 5, começando em 5 e terminando em 30. O 30 <b>deve aparecer</b>. Exiba a mensagem <b>"Contagem"</b> seguida do valor.</p>
+        <p class="hl"><b>Dica:</b> some o valor do <b>step</b> ao número final para que ele seja incluído.</p>
+      </div>
+      <div class="side">
+        <div class="label">Saída esperada</div>
+<pre class="out">Contagem 5
+Contagem 10
+Contagem 15
+Contagem 20
+Contagem 25
+Contagem 30</pre>
+      </div>
+    </article>
+  </section>
+
+  <section aria-labelledby="solucoes">
+    <div class="section-head">
+      <h2 id="solucoes">Lógica de Progamação com Python</h2>
+      <p>!!! Anotação !!! </p>
+    </div>
+
+    <article class="sol">
+      <div class="explain">
+        <div class="tag"><h3>Exemplo 1</h3><span class="badge">range(1, 9)</span></div>
+        <p class="hl">Escreva um programa em Python que use a estrutura for para exibir a mensagem "Aluno" seguida do número de cada aluno, de 1 até 8.</b>.</p>
+      </div>
+      <div class="side">
+<pre class="src"><span class="kw">for</span> aluno <span class="in">in</span> <span class="fn">range</span>(1, 9):
+    <span class="fn">print</span>(<span class="str">"Aluno"</span>, aluno)</pre>
+      </div>
+    </article>
+
+    <article class="sol">
+      <div class="explain">
+        <div class="tag"><h3>Exemplo 2</h3><span class="badge">range(2, 21, 2)</span></div>
+        <p class="hl">O <b>step</b> de <b>2</b> Escreva um programa em Python que use a estrutura for para exibir apenas os números pares de 2 até 20, com a mensagem "Número par" antes de cada valor.</p>
+      </div>
+      <div class="side">
+<pre class="src"><span class="kw">for</span> numero <span class="in">in</span> <span class="fn">range</span>(2, 21, 2):
+    <span class="fn">print</span>(<span class="str">"Número par"</span>, numero)</pre>
+      </div>
+    </article>
+
+
+    <p class="divider-note">Resumo: <code>range(inicio, fim, step)</code> vai de <code>inicio</code> até <code>fim - 1</code>, andando de <code>step</code> em <code>step</code>. Para incluir o último valor desejado, o limite deve ser maior que ele.</p>
+  </section>
+</main>
+
+</body></html>
